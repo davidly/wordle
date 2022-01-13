@@ -12,23 +12,20 @@ class Wordle
     const int wordLen = 5;
     const int maxGuesses = 6;
 
-    static string Score( string solution, string guess )
+    static void Score( string solution, string guess, char [] score, bool [] slotsUsed )
     {
-        char [] s = new char[ wordLen ];
-        bool [] slotUsed = new bool[ wordLen ];
-
-        for ( int c = 0; c < wordLen; c++ )
+        for ( int i = 0; i < wordLen; i++ )
         {
-            s[ c ] = ' ';
-            slotUsed[ c ] = false;
+            score[ i ] = ' ';
+            slotsUsed[ i ] = false;
         }
 
         for ( int i = 0; i < wordLen; i++ )
         {
             if ( guess[ i ] == solution[ i ] )
             {
-                s[ i ] = 'g';
-                slotUsed[ i ] = true;
+                score[ i ] = 'g';
+                slotsUsed[ i ] = true;
             }
         }
 
@@ -38,17 +35,23 @@ class Wordle
             {
                 for ( int j = 0; j < wordLen; j++ )
                 {
-                    if ( i != j && ! slotUsed[ j ] && guess[ i ] == solution[ j ] )
+                    if ( i != j && ! slotsUsed[ j ] && guess[ i ] == solution[ j ] )
                     {
-                        slotUsed[ j ] = true;
-                        s[ i ] = 'y';
+                        slotsUsed[ j ] = true;
+                        score[ i ] = 'y';
                     }
                 }
             }
         }
-
-        return new string( s );
     } //Score
+
+    static bool SameScore( char [] chars, string str )
+    {
+        for ( int i = 0; i < wordLen; i++ )
+            if ( chars[ i ] != str[ i ] )
+                return false;
+        return true;
+    } //SameScore
 
     static void Main( string[] args )
     {
@@ -99,6 +102,8 @@ class Wordle
 
             bool success = false;
             int nextGuess = startingGuess;
+            char [] score = new char[ wordLen ];
+            bool [] slotsUsed = new bool[ wordLen ];
 
             for ( int i = 0; i < maxGuesses; i++ )
             {
@@ -114,9 +119,9 @@ class Wordle
     
                     for ( int g = 0; g < i; g++ )
                     {
-                        string guessScore = Score( attempt, guesses[ g ] );
-                        //Console.WriteLine( "    match of guess {0}: {1}", g, guessScore );
-                        if ( 0 != String.Compare( guessScore, scores[ g ] ) )
+                        Score( attempt, guesses[ g ], score, slotsUsed );
+                        //Console.WriteLine( "    match of guess {0}: {1}", g, new string( score ) );
+                        if ( !SameScore( score, scores[ g ] ) )
                         {
                             newGuessMatchesPriorGuesses = false;
                             break;
@@ -127,11 +132,11 @@ class Wordle
                         break;
                 } while( true );
     
-                string attemptScore = Score( solution, attempt );
-                //Console.WriteLine( "  attempt {0} {1} has score {2}", i, attempt, attemptScore );
-                scores[ i ] = attemptScore;
+                Score( solution, attempt, score, slotsUsed );
                 guesses[ i ] = attempt;
-                if ( 0 == String.Compare( attemptScore, allgreen ) )
+                scores[ i ] = new string( score );
+                //Console.WriteLine( "  attempt {0} {1} has score {2}", i, attempt, scores[ i ] );
+                if ( SameScore( score, allgreen ) )
                 {
                     success = true;
                     break;
@@ -144,6 +149,7 @@ class Wordle
                 Interlocked.Increment( ref failures );
         } );
 
-        Console.WriteLine( "total games {0}, successes {1}, failures {2}, rate {3}", dictionary.Count(), successes, failures, (float) successes / (float) dictionary.Count() );
+        Console.WriteLine( "total games {0}, successes {1}, failures {2}, rate {3}", dictionary.Count(),
+                           successes, failures, (float) successes / (float) dictionary.Count() );
     } //Main
 } //Wordle
