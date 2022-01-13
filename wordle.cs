@@ -61,6 +61,8 @@ class Wordle
                  -1 == line.IndexOf( '\'' ) )
                dictionary.Add( line.ToLower() );
 
+        // randomize the dictionary words
+
         for ( int r = 0; r < dictionary.Count(); r++ )
         {
             int x = rand.Next( dictionary.Count() );
@@ -68,6 +70,18 @@ class Wordle
             string t = dictionary[ x ];
             dictionary[ x ] = dictionary[ y ];
             dictionary[ y ] = t;
+        }
+
+        // if found, use "glyph" as the opening guess since empirically that works best
+
+        int startingGuess = rand.Next( dictionary.Count() );
+        for ( int r = 0; r < dictionary.Count(); r++ )
+        {
+            if ( 0 == String.Compare( dictionary[ r ], "glyph" ) )
+            {
+                startingGuess = r;
+                break;
+            }
         }
 
         int successes = 0;
@@ -84,7 +98,7 @@ class Wordle
             //Console.WriteLine( "solution: {0}", solution );
 
             bool success = false;
-            int nextGuess = rand.Next( dictionary.Count() );
+            int nextGuess = startingGuess;
 
             for ( int i = 0; i < maxGuesses; i++ )
             {
@@ -114,7 +128,7 @@ class Wordle
                 } while( true );
     
                 string attemptScore = Score( solution, attempt );
-                //Console.WriteLine( "  attempt {0} has score {1}", attempt, attemptScore );
+                //Console.WriteLine( "  attempt {0} {1} has score {2}", i, attempt, attemptScore );
                 scores[ i ] = attemptScore;
                 guesses[ i ] = attempt;
                 if ( 0 == String.Compare( attemptScore, allgreen ) )
