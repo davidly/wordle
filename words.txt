@@ -18923,6 +18923,7 @@ faunas
 fauns
 faust
 faustus
+favor
 favour
 favourable
 favourably
