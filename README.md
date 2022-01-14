@@ -29,3 +29,8 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
                 wordle -a -v        solve for known wordle solutions and show failures.
                 wordle -a -V        solve for known wordle solutions and show details.
 
+ The code in wordle.cs is covered under GPL v3.
+ 
+ The file words.txt comes originally from WordNet. 
+ 
+     https://wordnet.princeton.edu/license-and-commercial-use
