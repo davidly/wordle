@@ -183,7 +183,6 @@ class Wordle
         if ( testActual && ( null != userSolution ) )
             Usage( " -a and -s are mutually exclusive" );
 
-        Random rand = new Random( Environment.TickCount );
         List<string> dictionary = new List<string>();
         foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
             if ( wordLen == line.Length  &&
@@ -194,6 +193,7 @@ class Wordle
 
         if ( randomizeDictionary )
         {
+            Random rand = new Random( Environment.TickCount );
             for ( int r = 0; r < dictionary.Count(); r++ )
             {
                 int x = rand.Next( dictionary.Count() );
@@ -214,7 +214,6 @@ class Wordle
             int currentGuess = 0;
 
             string [] scores = new string[ maxGuesses ];
-            scores[ 0 ] = firstGuess;
             string [] guesses = new string[ maxGuesses ];
             guesses[ 0 ] = firstGuess;
             int nextGuess = startingGuess;
@@ -229,7 +228,6 @@ class Wordle
                 {
                     Console.Write( "enter score: " );
                     scoreGiven = Console.ReadLine().ToLower();
-
                     if ( IsScoreValid( scoreGiven ) )
                         break;
 
@@ -273,7 +271,6 @@ class Wordle
             string [] scores = new string[ maxGuesses ];
             string [] guesses = new string[ maxGuesses ];
             string solution = testCases[ iSolution ];
-
             bool success = false;
             int nextGuess = startingGuess;
             char [] score = new char[ wordLen ];
