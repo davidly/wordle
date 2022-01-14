@@ -1,7 +1,7 @@
 # wordle
 wordle generation and solution app
 
-Download https://raw.githubusercontent.com/dwyl/english-words/master/words.txt into the same folder as wordle.exe
+A default words.txt is given. Or, Download https://raw.githubusercontent.com/dwyl/english-words/master/words.txt into the same folder as wordle.exe
 
 Build like this (using your favorite version of .net)
 
