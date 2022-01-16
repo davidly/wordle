@@ -1,8 +1,6 @@
 # wordle
 wordle generation and solution app
 
-A default words.txt is given. Or, Download https://raw.githubusercontent.com/dwyl/english-words/master/words.txt into the same folder as wordle.exe
-
 Build like this (using your favorite version of .net)
 
     c:\windows\microsoft.net\framework64\v4.0.30319\csc.exe wordle.cs /nologo /debug:full /o+
@@ -29,3 +27,8 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
                 wordle -a -v        solve for known wordle solutions and show failures.
                 wordle -a -V        solve for known wordle solutions and show details.
 
+ The code in wordle.cs is covered under GPL v3.
+ 
+ The file words.txt comes originally from WordNet. 
+ 
+     https://wordnet.princeton.edu/license-and-commercial-use
