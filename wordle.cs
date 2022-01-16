@@ -18,22 +18,21 @@ class Wordle
     {
         for ( int i = 0; i < wordLen; i++ )
         {
-            score[ i ] = ' ';
-            slotsUsed[ i ] = false;
-        }
-
-        for ( int i = 0; i < wordLen; i++ )
-        {
             if ( guess[ i ] == solution[ i ] )
             {
                 score[ i ] = 'g';
                 slotsUsed[ i ] = true;
             }
+            else
+            {
+                score[ i ] = ' ';
+                slotsUsed[ i ] = false;
+            }
         }
 
         for ( int i = 0; i < wordLen; i++ )
         {
-            if ( guess[ i ] != solution[ i ] )
+            if ( 'g' != score[ i ] )
             {
                 for ( int j = 0; j < wordLen; j++ )
                 {
@@ -254,7 +253,7 @@ class Wordle
         {
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge",
-            "query", "drink", "favor", "abbey", "tangy", 
+            "query", "drink", "favor", "abbey", "tangy", "panic",
         };
 
         string [] userSolutions = { userSolution };
