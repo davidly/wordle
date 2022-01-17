@@ -12,7 +12,7 @@ class Wordle
     const int wordLen = 5;
     const int maxGuesses = 6;
     const string dictionaryFile = @"words.txt";
-    const string defaultGuess = @"glyph";        // empirically, this word works best
+    const string defaultGuess = @"tramp";        // empirically, this word works best
 
     static void Score( string solution, string guess, char [] score, bool [] slotsUsed )
     {
@@ -253,7 +253,7 @@ class Wordle
         {
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge",
-            "query", "drink", "favor", "abbey", "tangy", "panic",
+            "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire",
         };
 
         string [] userSolutions = { userSolution };
