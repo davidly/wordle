@@ -14,14 +14,14 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
     -g:guess    The first guess word to use. Default is "glyph"
     -i          Interactive mode. Use this to have the app play wordle for you.
     -o          Use just one core
-    -r          Randomize the order of words in the dictionary
+    -r          Don't Randomize the order of words in the dictionary
     -s:solution The word to search for instead of the whole dictionary
     -v          Verbose logging of failures to find a solution. -V for successes too
     notes:      Assumes words.txt in the current folder contains a dictionary
                 Only one of -a or -s can be specified
     samples:    wordle              solve each word in the dictionary
                 wordle -i           interactive mode for use with the wordle app
-                wordle -i -r        interactive mode, but randomize dictionary word order
+                wordle -i -r        interactive mode, but don't randomize dictionary word order
                 wordle -i /g:group  interactive mode, but make the first guess "group"
                 wordle /s:tangy /V  solve for tangy and show the guesses
                 wordle -a -v        solve for known wordle solutions and show failures.
