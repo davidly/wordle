@@ -32,3 +32,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
  The file words.txt comes originally from WordNet. 
  
      https://wordnet.princeton.edu/license-and-commercial-use
+     
+ For some thoughts on this app, see: 
+ 
+     https://medium.com/@davidly_33504/first-guesses-in-wordle-291ebd50713a
