@@ -211,7 +211,6 @@ class Wordle
         {
             Console.WriteLine( "guess 0: " + firstGuess );
             int currentGuess = 0;
-
             string [] scores = new string[ maxGuesses ];
             string [] guesses = new string[ maxGuesses ];
             guesses[ 0 ] = firstGuess;
@@ -219,7 +218,7 @@ class Wordle
             char [] score = new char[ wordLen ];
             bool [] slotsUsed = new bool[ wordLen ];
 
-            while ( currentGuess < maxGuesses )
+            do
             {
                 string scoreGiven;
 
@@ -241,25 +240,22 @@ class Wordle
                 }
 
                 if ( currentGuess == maxGuesses )
-                {
-                    Console.WriteLine( "failed to solve the puzzle!" );
-                    Environment.Exit( 1 );
-                }
+                    break;
 
                 string attempt = FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess );
                 guesses[ currentGuess ] = attempt;
                 Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
-            }
+            } while ( true );
 
-            Console.WriteLine( "failed to find a solution" );
+            Console.WriteLine( "failed to find a solution!" );
             Environment.Exit( 0 );
         }
 
         string [] actualSolutions = // actual puzzle solutions
         {
             "tapir", "troll",
-            "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge",
-            "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy",
+            "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
+            "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy",
         };
 
         string [] userSolutions = { userSolution };
