@@ -110,14 +110,14 @@ class Wordle
         Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
         Console.WriteLine( "  -o          Use just one core" );
-        Console.WriteLine( "  -r          Randomize the order of words in the dictionary" );
+        Console.WriteLine( "  -r          Don't Randomize the order of words in the dictionary" );
         Console.WriteLine( "  -s:solution The word to search for instead of the whole dictionary" );
         Console.WriteLine( "  -v          Verbose logging of failures to find a solution. -V for successes too" );
         Console.WriteLine( "  notes:      Assumes {0} in the current folder contains a dictionary", dictionaryFile );
         Console.WriteLine( "              Only one of -a or -s can be specified" );
         Console.WriteLine( "  samples:    wordle              solve each word in the dictionary" );
         Console.WriteLine( "              wordle -i           interactive mode for use with the wordle app" );
-        Console.WriteLine( "              wordle -i -r        interactive mode, but randomize dictionary word order" );
+        Console.WriteLine( "              wordle -i -r        interactive mode, but don't randomize dictionary word order" );
         Console.WriteLine( "              wordle -i /g:group  interactive mode, but make the first guess \"group\"" );
         Console.WriteLine( "              wordle /s:tangy /V  solve for tangy and show the guesses" );
         Console.WriteLine( "              wordle -a -v        solve for known wordle solutions and show failures." );
@@ -131,7 +131,7 @@ class Wordle
         bool verbose = false;
         bool verboseSuccess = false;
         bool oneCore = false;
-        bool randomizeDictionary = false;
+        bool randomizeDictionary = true;
         bool interactiveMode = false;
         string firstGuess = defaultGuess;
         string userSolution = null;
@@ -159,7 +159,7 @@ class Wordle
                 else if ( 'O' == c )
                     oneCore = true;
                 else if ( 'R' == c )
-                    randomizeDictionary = true;
+                    randomizeDictionary = false;
                 else if ( 'S' == c )
                 {
                     if ( arg.Length != ( 3 + wordLen ) )
