@@ -240,6 +240,12 @@ class Wordle
                     Environment.Exit( 0 );
                 }
 
+                if ( currentGuess == maxGuesses )
+                {
+                    Console.WriteLine( "failed to solve the puzzle!" );
+                    Environment.Exit( 1 );
+                }
+
                 string attempt = FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess );
                 guesses[ currentGuess ] = attempt;
                 Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
@@ -253,7 +259,7 @@ class Wordle
         {
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge",
-            "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire",
+            "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy",
         };
 
         string [] userSolutions = { userSolution };
