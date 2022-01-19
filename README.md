@@ -14,6 +14,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
     -g:guess    The first guess word to use. Default is "glyph"
     -i          Interactive mode. Use this to have the app play wordle for you.
     -o          Use just one core
+    -p          Play wordle
     -r          Don't Randomize the order of words in the dictionary
     -s:solution The word to search for instead of the whole dictionary
     -v          Verbose logging of failures to find a solution. -V for successes too
