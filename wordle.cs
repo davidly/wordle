@@ -110,6 +110,7 @@ class Wordle
         Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
         Console.WriteLine( "  -o          Use just one core" );
+        Console.WriteLine( "  -p          Play wordle" );
         Console.WriteLine( "  -r          Don't Randomize the order of words in the dictionary" );
         Console.WriteLine( "  -s:solution The word to search for instead of the whole dictionary" );
         Console.WriteLine( "  -v          Verbose logging of failures to find a solution. -V for successes too" );
@@ -133,6 +134,7 @@ class Wordle
         bool oneCore = false;
         bool randomizeDictionary = true;
         bool interactiveMode = false;
+        bool playWordleMode = false;
         string firstGuess = defaultGuess;
         string userSolution = null;
         string allgreen = new string( 'g', wordLen );
@@ -158,6 +160,8 @@ class Wordle
                     interactiveMode = true;
                 else if ( 'O' == c )
                     oneCore = true;
+                else if ( 'P' == c )
+                    playWordleMode = true;
                 else if ( 'R' == c )
                     randomizeDictionary = false;
                 else if ( 'S' == c )
@@ -182,6 +186,9 @@ class Wordle
         if ( testActual && ( null != userSolution ) )
             Usage( " -a and -s are mutually exclusive" );
 
+        if ( playWordleMode && interactiveMode )
+            Usage( " -p and -i are mutually exclusive" );
+
         List<string> dictionary = new List<string>();
         foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
             if ( wordLen == line.Length  &&
@@ -201,6 +208,52 @@ class Wordle
                 dictionary[ x ] = dictionary[ y ];
                 dictionary[ y ] = t;
             }
+        }
+
+        if ( playWordleMode )
+        {
+            Random rand = new Random( Environment.TickCount );
+            string solution = dictionary[ rand.Next( dictionary.Count() ) ];
+            char [] score = new char[ wordLen ];
+            bool [] slotsUsed = new bool[ wordLen ];
+
+            for ( int attempt = 0; attempt < maxGuesses; attempt++ )
+            {
+                string userGuess = null;
+
+                do
+                {
+                    Console.Write( "enter guess: " );
+                    userGuess = Console.ReadLine().ToLower();
+
+                    if ( wordLen != userGuess.Length )
+                    {
+                        Console.WriteLine( "Guesses must be {0} letters long; try again", wordLen );
+                        continue;
+                    }
+
+                    if ( -1 == dictionary.IndexOf( userGuess ) )
+                    {
+                        Console.WriteLine( "Guess isn't in the dictionary; try again" );
+                        continue;
+                    }
+
+                    break;
+                } while ( true );
+
+                Score( solution, userGuess, score, slotsUsed );
+                string strScore = new string( score );
+                Console.WriteLine( "score: '" + strScore + "'" );
+
+                if ( 0 == String.Compare( allgreen, strScore ) )
+                {
+                    Console.WriteLine( allgreen + "\nYou found the solution!" );
+                    Environment.Exit( 0 );
+                }
+            }
+
+            Console.WriteLine( "You didn't find the solution" );
+            Environment.Exit( 1 );
         }
 
         int startingGuess = dictionary.IndexOf( firstGuess );
@@ -255,7 +308,7 @@ class Wordle
         {
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
-            "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy",
+            "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point",
         };
 
         string [] userSolutions = { userSolution };
