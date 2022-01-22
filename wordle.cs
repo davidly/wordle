@@ -109,7 +109,7 @@ class Wordle
         Console.WriteLine( "  -a          Test against actual wordle solutions, not the whole dictionary" );
         Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
-        Console.WriteLine( "  -m:X        Limit guesses to just X (2-6). Default is {0}", maxGuesses );
+        Console.WriteLine( "  -m:X        Limit guesses to just X (2-12). Default is {0}", maxGuesses );
         Console.WriteLine( "  -o          Use just one core" );
         Console.WriteLine( "  -p          Play wordle" );
         Console.WriteLine( "  -r          Don't Randomize the order of words in the dictionary" );
@@ -162,11 +162,11 @@ class Wordle
                     interactiveMode = true;
                 else if ( 'M' == c )
                 {
-                    if ( arg.Length != 4 )
+                    if ( arg.Length > 5 || arg.Length < 4 )
                         Usage( "invalid /m argument" );
 
                     maxAllowedGuesses = int.Parse( arg.Substring( 3 ) );
-                    if ( maxAllowedGuesses < 2 || maxAllowedGuesses > 6 )
+                    if ( maxAllowedGuesses < 2 || maxAllowedGuesses > 12 )
                         Usage( "argument for /m is out of range" );
                 }
                 else if ( 'O' == c )
@@ -320,6 +320,7 @@ class Wordle
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
+            "prick", "wince",
         };
 
         string [] userSolutions = { userSolution };
