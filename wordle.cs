@@ -320,7 +320,7 @@ class Wordle
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
-            "prick", "wince", "crimp",
+            "prick", "wince", "crimp", "knoll", "sugar",
         };
 
         string [] userSolutions = { userSolution };
