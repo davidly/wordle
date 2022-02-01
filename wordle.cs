@@ -320,15 +320,14 @@ class Wordle
             "tapir", "troll",
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
-            "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", 
+            "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
+            "light", "those",
         };
 
         string [] userSolutions = { userSolution };
         IList<string> testCases = ( null != userSolution ) ? ( IList<string> ) userSolutions :
                                   testActual ? ( IList<string> ) actualSolutions : dictionary;
-        int successes = 0;
-        int failures = 0;
-        int attemptTotal = 0;
+        int successes = 0, failures = 0, attempts = 0;
         Stopwatch stopWatch = Stopwatch.StartNew();
 
         Parallel.For ( 0, testCases.Count(), new ParallelOptions{ MaxDegreeOfParallelism = oneCore ? 1 : -1 },
@@ -348,7 +347,7 @@ class Wordle
                 Score( solution, attempt, score, slotsUsed );
                 guesses[ currentGuess ] = attempt;
                 scores[ currentGuess ] = new string( score );
-                Interlocked.Increment( ref attemptTotal );
+                Interlocked.Increment( ref attempts );
 
                 if ( SameScore( score, allgreen ) )
                 {
@@ -374,7 +373,7 @@ class Wordle
         } );
 
         Console.WriteLine( "total games {0}, successes {1}, failures {2}, average attempts {3:.00}, success rate {4:.00}%, {5} milliseconds",
-                           testCases.Count(), successes, failures, (float) attemptTotal / (float) testCases.Count(),
+                           testCases.Count(), successes, failures, (float) attempts / (float) testCases.Count(),
                            100.0 * (float) successes / (float) testCases.Count(), stopWatch.ElapsedMilliseconds );
     } //Main
 } //Wordle
