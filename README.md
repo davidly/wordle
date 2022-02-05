@@ -1,7 +1,7 @@
 # wordle
 wordle generation and solution app
 
-Build like this (using your favorite version of .net)
+Build like this (using your favorite version of .net):
 
     c:\windows\microsoft.net\framework64\v4.0.30319\csc.exe wordle.cs /nologo /debug:full /o+
 
