@@ -8,10 +8,12 @@ Build like this (using your favorite version of .net):
 By default, the app finds all 5-character words in words.txt and for each attempts to solve wordle. When it can't find a solution, it's
 because there are multiple answers that fit.
 
+To use this app as a tool to solve a the day's game, use -i. To specifiy your own starting word, use -g:guess. 
+
 Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
     -a          Test against actual wordle solutions, not the whole dictionary
-    -g:guess    The first guess word to use. Default is "glyph"
+    -g:guess    The first guess word to use. Default is "tramp"
     -i          Interactive mode. Use this to have the app play wordle for you.
     -m:X        Limit guesses to just X (2-12). Default is 6
     -o          Use just one core
@@ -20,7 +22,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
     -s:solution The word to search for instead of the whole dictionary
     -v          Verbose logging of failures to find a solution. -V for successes too
     notes:      Assumes words.txt in the current folder contains a dictionary
-                Only one of -a or -s can be specified
+                Only one of -i, -a, or -s can be specified
     samples:    wordle              solve each word in the dictionary
                 wordle -i           interactive mode for use with the wordle app
                 wordle -i -r        interactive mode, but don't randomize dictionary word order
