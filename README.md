@@ -8,6 +8,8 @@ Build like this (using your favorite version of .net):
 By default, the app finds all 5-character words in words.txt and for each attempts to solve wordle. When it can't find a solution, it's
 because there are multiple answers that fit.
 
+To use this app as a tool to solve a the day's game, use -i. To specifiy your own starting word, use -g:guess. 
+
 Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
     -a          Test against actual wordle solutions, not the whole dictionary
