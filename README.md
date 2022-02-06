@@ -22,7 +22,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
     -s:solution The word to search for instead of the whole dictionary
     -v          Verbose logging of failures to find a solution. -V for successes too
     notes:      Assumes words.txt in the current folder contains a dictionary
-                Only one of -a or -s can be specified
+                Only one of -i, -a, or -s can be specified
     samples:    wordle              solve each word in the dictionary
                 wordle -i           interactive mode for use with the wordle app
                 wordle -i -r        interactive mode, but don't randomize dictionary word order
