@@ -13,7 +13,7 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
 Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
     -a          Test against actual wordle solutions, not the whole dictionary
-    -g:guess    The first guess word to use. Default is "glyph"
+    -g:guess    The first guess word to use. Default is "tramp"
     -i          Interactive mode. Use this to have the app play wordle for you.
     -m:X        Limit guesses to just X (2-12). Default is 6
     -o          Use just one core
