@@ -38,8 +38,9 @@ class Wordle
                 {
                     if ( i != j && ! slotsUsed[ j ] && guess[ i ] == solution[ j ] )
                     {
-                        slotsUsed[ j ] = true;
                         score[ i ] = 'y';
+                        slotsUsed[ j ] = true;
+                        break;
                     }
                 }
             }
