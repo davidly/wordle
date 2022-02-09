@@ -322,7 +322,7 @@ class Wordle
             "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query",
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
-            "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", 
+            "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
         };
 
         string [] userSolutions = { userSolution };
