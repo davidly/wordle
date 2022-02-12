@@ -34,7 +34,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
  The code in wordle.cs is covered under GPL v3.
  
- The file words.txt comes originally from WordNet. 
+ The file words.txt comes originally from WordNet. Some additional slang and Wordle solutions have been added.
  
      https://wordnet.princeton.edu/license-and-commercial-use
      
