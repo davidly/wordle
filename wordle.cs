@@ -12,7 +12,7 @@ class Wordle
     const int wordLen = 5;
     const int maxGuesses = 6;
     const string dictionaryFile = @"words.txt";
-    const string defaultGuess = @"blimp";        // empirically, this word works best
+    const string defaultGuess = @"blimp";   // best first word when choosing the best next word randomly
 
     static void Score( string solution, string guess, char [] score, bool [] slotsUsed )
     {
@@ -141,7 +141,7 @@ class Wordle
 
     static string FindNextAttempt2( ref int nextGuess, string [] guesses, string [] scores, char [] score,
                                     bool [] slotsUsed, List<string> dictionary, int currentGuess, int startingGuess,
-                                    List<string> validGuesses )
+                                    List<string> validGuesses, bool bestGuess )
     {
         int localNextGuess = nextGuess;
 
@@ -226,34 +226,32 @@ class Wordle
         // Don't bother finding the square root of the final distance, since it won't change anything.
 
         int halfWords = validGuesses.Count() / 2;
-        int [] wordScores = new int[ validGuesses.Count() ];
         char [] newLetters = new char[ wordLength ];
+        int bestScore = bestGuess ? int.MaxValue : 0;
+        int bestWord = 0;
 
         for ( int i = 0; i < validGuesses.Count(); i++ )
         {
             int charCount = FindNewLetters( validGuesses[ i ], scores[ lastGuess ], guesses[ lastGuess ], newLetters );
+            int wordScore = 0;
 
             for ( int l = 0; l < charCount; l++ )
             {
                 int distance = halfWords - letterCounts[ newLetters[ l ] - 'a' ];
-                wordScores[ i ] += ( distance * distance);
+                wordScore += ( distance * distance);
             }
 
-            // penalize non-unique letters. This also penalizes 'g' letters, but does so equally for all.
+            // Penalize non-unique letters. This also penalizes 'g' letters, but does so equally for all.
 
             for ( int l = charCount; l < wordLength; l++ )
-                wordScores[ i ] += ( halfWords * halfWords );
-        }
+                wordScore += ( halfWords * halfWords );
 
-        // Find the word with the lowest score -- closest to the center of all dimensions
+            // Find the word with the lowest (or highest for worst) score. Score is based on closeness to the center of all dimensions
 
-        int bestScore = int.MaxValue, bestWord = 0;
-        for ( int i = 0; i < validGuesses.Count(); i++ )
-        {
-            if ( wordScores[ i ] < bestScore )
+            if ( bestGuess ? ( wordScore < bestScore ) : ( wordScore > bestScore ) )
             {
                 bestWord = i;
-                bestScore = wordScores[ i ];
+                bestScore = wordScore;
             }
         }
 
@@ -263,7 +261,7 @@ class Wordle
     static void Usage( string error )
     {
         Console.WriteLine( "error: {0} ", error );
-        Console.WriteLine( "Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]" );
+        Console.WriteLine( "Usage: wordle [-a] [-g:guess] [-i] [-m:X] [-o] [-p] [-r] [-s:solution] [-v] [-x]" );
         Console.WriteLine( "  -a          Test against actual wordle solutions, not the whole dictionary" );
         Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
@@ -273,7 +271,7 @@ class Wordle
         Console.WriteLine( "  -r          Don't Randomize the order of words in the dictionary" );
         Console.WriteLine( "  -s:solution The word to search for instead of the whole dictionary" );
         Console.WriteLine( "  -v          Verbose logging of failures to find a solution. -V for successes too" );
-        Console.WriteLine( "  -x          Use experimental algorithm for finding the next guess" );
+        Console.WriteLine( "  -x          Use experimental algorithm for finding the best guess. -X for worst guess" );
         Console.WriteLine( "  notes:      Assumes {0} in the current folder contains a dictionary", dictionaryFile );
         Console.WriteLine( "              Only one of -a or -s can be specified" );
         Console.WriteLine( "  samples:    wordle              solve each word in the dictionary" );
@@ -307,6 +305,7 @@ class Wordle
         bool interactiveMode = false;
         bool playWordleMode = false;
         bool experimentalAlgorithm = false;
+        bool bestGuess = true;
         string firstGuess = defaultGuess;
         string userSolution = null;
         int maxAllowedGuesses = maxGuesses;
@@ -359,7 +358,10 @@ class Wordle
                     verboseSuccess = 'V' == args[i][1];
                 }
                 else if ( 'X' == c )
+                {
                     experimentalAlgorithm = true;
+                    bestGuess = ( 'x' == arg[ 1 ] );
+                }
                 else
                     Usage( "invalid argument: " + args[i] );
             }
@@ -483,8 +485,10 @@ class Wordle
                 if ( currentGuess == maxAllowedGuesses )
                     break;
 
-                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess, validGuesses ) :
-                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess );
+                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                           currentGuess, startingGuess, validGuesses, bestGuess ) :
+                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                          currentGuess, startingGuess );
                 guesses[ currentGuess ] = attempt;
                 Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
             } while ( true );
@@ -500,7 +504,7 @@ class Wordle
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
-            "pause", "elves", "ultra", 
+            "pause", "elves", "ultra", "robin", 
         };
 
         string [] userSolutions = { userSolution };
@@ -520,14 +524,19 @@ class Wordle
             char [] score = new char[ wordLen ];
             bool [] slotsUsed = new bool[ wordLen ];
             List<string> validGuesses = experimentalAlgorithm ? new List<string>() : null;
+            int [] remainingGuesses = experimentalAlgorithm ? new int[ maxAllowedGuesses ] : null;
 
             for ( int currentGuess = 0; currentGuess < maxAllowedGuesses; currentGuess++ )
             {
-                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess, validGuesses ) :
-                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary, currentGuess, startingGuess );
+                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                           currentGuess, startingGuess, validGuesses, bestGuess ) :
+                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                          currentGuess, startingGuess );
                 Score( solution, attempt, score, slotsUsed );
                 guesses[ currentGuess ] = attempt;
                 scores[ currentGuess ] = new string( score );
+                if ( experimentalAlgorithm )
+                    remainingGuesses[ currentGuess ] = validGuesses.Count();
                 Interlocked.Increment( ref attempts );
 
                 if ( SameScore( score, allgreen ) )
@@ -548,7 +557,13 @@ class Wordle
                 {
                     Console.WriteLine( "{0} for {1}", success ? "solved" : "could not solve", solution );
                     for ( int g = 0; g < maxAllowedGuesses && null != guesses[g]; g++ )
-                        Console.WriteLine( "  attempt {0}: {1}, score '{2}'", g, guesses[ g ], scores[ g ] );
+                    {
+                        if ( experimentalAlgorithm )
+                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'  remaining words {3}", g, guesses[ g ], scores[ g ],
+                                               0 == remainingGuesses[ g ] ? dictionary.Count() : remainingGuesses[ g ] );
+                        else
+                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'", g, guesses[ g ], scores[ g ] );
+                    }
                 }
             }
         } );
