@@ -41,3 +41,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
  For some thoughts on this app, see: 
  
      https://medium.com/@davidly_33504/first-guesses-in-wordle-291ebd50713a
+     
+ For more on the /x flag:
+ 
+     https://medium.com/@davidly_33504/choosing-wordle-words-69a7ed5f966b
