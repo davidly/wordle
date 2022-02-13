@@ -13,7 +13,7 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
 Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
     -a          Test against actual wordle solutions, not the whole dictionary
-    -g:guess    The first guess word to use. Default is "tramp"
+    -g:guess    The first guess word to use. Default is "blimp"
     -i          Interactive mode. Use this to have the app play wordle for you.
     -m:X        Limit guesses to just X (2-12). Default is 6
     -o          Use just one core
@@ -21,6 +21,7 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
     -r          Don't Randomize the order of words in the dictionary
     -s:solution The word to search for instead of the whole dictionary
     -v          Verbose logging of failures to find a solution. -V for successes too
+    -x          Use experimental algorithm for finding the next guess
     notes:      Assumes words.txt in the current folder contains a dictionary
                 Only one of -i, -a, or -s can be specified
     samples:    wordle              solve each word in the dictionary
@@ -33,10 +34,14 @@ Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
 
  The code in wordle.cs is covered under GPL v3.
  
- The file words.txt comes originally from WordNet. 
+ The file words.txt comes originally from WordNet. Some additional slang and Wordle solutions have been added.
  
      https://wordnet.princeton.edu/license-and-commercial-use
      
  For some thoughts on this app, see: 
  
      https://medium.com/@davidly_33504/first-guesses-in-wordle-291ebd50713a
+     
+ For more on the /x flag:
+ 
+     https://medium.com/@davidly_33504/choosing-wordle-words-69a7ed5f966b
