@@ -432,7 +432,7 @@ class Wordle
                 {
                     firstWordMode = true;
 
-                    if ( ':' == arg[ 2 ] )
+                    if ( arg.Length >= 4 && ':' == arg[ 2 ] )
                         firstWordIterations = int.Parse( arg.Substring( 3 ) );
                 }
                 else if ( 'G' == c )
