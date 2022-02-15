@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -9,6 +10,28 @@ using System.Threading.Tasks;
 
 class Wordle
 {
+    class WordCount
+    {
+        public string word;
+        public int count;
+    
+        public WordCount( string w, int c )
+        {
+            word = w;
+            count = c;
+        }
+    }
+    
+    public class WordCountComparer : IComparer
+    {
+        int IComparer.Compare( Object x, Object y )
+        {
+            WordCount wcx = (WordCount) x;
+            WordCount wcy = (WordCount) y;
+            return wcy.count - wcx.count;
+        }
+    }
+
     const int wordLen = 5;
     const int maxGuesses = 6;
     const string dictionaryFile = @"words.txt";
@@ -143,8 +166,6 @@ class Wordle
                                     bool [] slotsUsed, List<string> dictionary, int currentGuess, int startingGuess,
                                     List<string> validGuesses, bool bestGuess )
     {
-        int localNextGuess = nextGuess;
-
         if ( 0 == currentGuess )
             return dictionary[ nextGuess ];
 
@@ -183,8 +204,7 @@ class Wordle
                 if ( !remove )
                 {
                     Score( word, guesses[ latestIndex ], score, slotsUsed );
-                    if ( !SameScore( score, scores[ latestIndex ] ) )
-                        remove = true;
+                    remove = !SameScore( score, scores[ latestIndex ] );
                 }
 
                 if ( remove )
@@ -263,6 +283,7 @@ class Wordle
         Console.WriteLine( "error: {0} ", error );
         Console.WriteLine( "Usage: wordle [-a] [-g:guess] [-i] [-m:X] [-o] [-p] [-r] [-s:solution] [-v] [-x]" );
         Console.WriteLine( "  -a          Test against actual wordle solutions, not the whole dictionary" );
+        Console.WriteLine( "  -f          Try every word as a first guess to see what works best/worst in several iterations." );
         Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
         Console.WriteLine( "  -m:X        Limit guesses to just X (2-12). Default is {0}", maxGuesses );
@@ -274,6 +295,8 @@ class Wordle
         Console.WriteLine( "  -x          Use experimental algorithm for finding the best guess. -X for worst guess" );
         Console.WriteLine( "  notes:      Assumes {0} in the current folder contains a dictionary", dictionaryFile );
         Console.WriteLine( "              Only one of -a or -s can be specified" );
+        Console.WriteLine( "              Only one of -f, -i, or -p can be specified" );
+        Console.WriteLine( "              -f allows the iteration count (default 4) to be specified with -f:X" );
         Console.WriteLine( "  samples:    wordle              solve each word in the dictionary" );
         Console.WriteLine( "              wordle -i           interactive mode for use with the wordle app" );
         Console.WriteLine( "              wordle -i -r        interactive mode, but don't randomize dictionary word order" );
@@ -295,6 +318,88 @@ class Wordle
         return true;
     } //IsAllAlpha
 
+    static void RandomizeList<T>( List<T> list )
+    {
+        Random rand = new Random( Environment.TickCount );
+        int count = list.Count();
+
+        for ( int r = 0; r < count; r++ )
+        {
+            int x = rand.Next( count );
+            int y = rand.Next( count );
+            T temp = list[ x ];
+            list[ x ] = list[ y ];
+            list[ y ] = temp;
+        }
+    } //RandomizeList<T>
+
+    static void SolveForAllWords( IList<string> testCases, int startingGuess, List<string> dictionary,
+                                  ref int successesResult, ref int failuresResult, ref int attemptsResult,
+                                  bool experimentalAlgorithm, bool oneCore, int maxAllowedGuesses, bool bestGuess, string allgreen,
+                                  bool verboseSuccess, bool verbose )
+    {
+        int successes = 0, failures = 0, attempts = 0;
+
+        Parallel.For ( 0, testCases.Count(), new ParallelOptions{ MaxDegreeOfParallelism = oneCore ? 1 : -1 },
+                       iSolution =>
+        {
+            string [] scores = new string[ maxAllowedGuesses ];
+            string [] guesses = new string[ maxAllowedGuesses ];
+            string solution = testCases[ iSolution ];
+            bool success = false;
+            int nextGuess = startingGuess;
+            char [] score = new char[ wordLen ];
+            bool [] slotsUsed = new bool[ wordLen ];
+            List<string> validGuesses = experimentalAlgorithm ? new List<string>() : null;
+            int [] remainingGuesses = experimentalAlgorithm ? new int[ maxAllowedGuesses ] : null;
+
+            for ( int currentGuess = 0; currentGuess < maxAllowedGuesses; currentGuess++ )
+            {
+                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                           currentGuess, startingGuess, validGuesses, bestGuess ) :
+                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
+                                                                          currentGuess, startingGuess );
+                Score( solution, attempt, score, slotsUsed );
+                guesses[ currentGuess ] = attempt;
+                scores[ currentGuess ] = new string( score );
+                if ( experimentalAlgorithm )
+                    remainingGuesses[ currentGuess ] = validGuesses.Count();
+                Interlocked.Increment( ref attempts );
+
+                if ( SameScore( score, allgreen ) )
+                {
+                    success = true;
+                    break;
+                }
+            }
+
+            if ( success )
+                Interlocked.Increment( ref successes );
+            else
+                Interlocked.Increment( ref failures );
+
+            if ( verboseSuccess || ( !success && verbose ) )
+            {
+                lock ( testCases )
+                {
+                    Console.WriteLine( "{0} for {1}", success ? "solved" : "could not solve", solution );
+                    for ( int g = 0; g < maxAllowedGuesses && null != guesses[g]; g++ )
+                    {
+                        if ( experimentalAlgorithm )
+                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'  remaining words {3}", g, guesses[ g ], scores[ g ],
+                                               0 == remainingGuesses[ g ] ? dictionary.Count() : remainingGuesses[ g ] );
+                        else
+                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'", g, guesses[ g ], scores[ g ] );
+                    }
+                }
+            }
+        } );
+
+        successesResult = successes;
+        failuresResult = failures;
+        attemptsResult = attempts;
+    } //SolveForAllWords
+
     static void Main( string[] args )
     {
         bool testActual = false;
@@ -306,6 +411,8 @@ class Wordle
         bool playWordleMode = false;
         bool experimentalAlgorithm = false;
         bool bestGuess = true;
+        bool firstWordMode = false;
+        int firstWordIterations = 4;
         string firstGuess = defaultGuess;
         string userSolution = null;
         int maxAllowedGuesses = maxGuesses;
@@ -321,6 +428,13 @@ class Wordle
 
                 if ( 'A' == c )
                     testActual = true;
+                else if ( 'F' == c )
+                {
+                    firstWordMode = true;
+
+                    if ( ':' == arg[ 2 ] )
+                        firstWordIterations = int.Parse( arg.Substring( 3 ) );
+                }
                 else if ( 'G' == c )
                 {
                     if ( arg.Length != ( 3 + wordLen ) )
@@ -375,6 +489,12 @@ class Wordle
         if ( playWordleMode && interactiveMode )
             Usage( " -p and -i are mutually exclusive" );
 
+        if ( playWordleMode && firstWordMode )
+            Usage( " -p and -f are mutually exclusive" );
+
+        if ( interactiveMode && firstWordMode )
+            Usage( " -i and -f are mutually exclusive" );
+
         List<string> dictionary = new List<string>();
         foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
         {
@@ -387,17 +507,7 @@ class Wordle
         }
 
         if ( randomizeDictionary )
-        {
-            Random rand = new Random( Environment.TickCount );
-            for ( int r = 0; r < dictionary.Count(); r++ )
-            {
-                int x = rand.Next( dictionary.Count() );
-                int y = rand.Next( dictionary.Count() );
-                string t = dictionary[ x ];
-                dictionary[ x ] = dictionary[ y ];
-                dictionary[ y ] = t;
-            }
-        }
+            RandomizeList<string>( dictionary );
 
         if ( playWordleMode )
         {
@@ -504,72 +614,71 @@ class Wordle
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
-            "pause", "elves", "ultra", "robin", "cynic", 
+            "pause", "elves", "ultra", "robin", "cynic", "aroma", 
         };
 
         string [] userSolutions = { userSolution };
         IList<string> testCases = ( null != userSolution ) ? ( IList<string> ) userSolutions :
                                   testActual ? ( IList<string> ) actualSolutions : dictionary;
-        int successes = 0, failures = 0, attempts = 0;
+
+
         Stopwatch stopWatch = Stopwatch.StartNew();
 
-        Parallel.For ( 0, testCases.Count(), new ParallelOptions{ MaxDegreeOfParallelism = oneCore ? 1 : -1 },
-                       iSolution =>
+        if ( firstWordMode )
         {
-            string [] scores = new string[ maxAllowedGuesses ];
-            string [] guesses = new string[ maxAllowedGuesses ];
-            string solution = testCases[ iSolution ];
-            bool success = false;
-            int nextGuess = startingGuess;
-            char [] score = new char[ wordLen ];
-            bool [] slotsUsed = new bool[ wordLen ];
-            List<string> validGuesses = experimentalAlgorithm ? new List<string>() : null;
-            int [] remainingGuesses = experimentalAlgorithm ? new int[ maxAllowedGuesses ] : null;
+            SortedList<string,int> bestList = new SortedList<string,int>();
 
-            for ( int currentGuess = 0; currentGuess < maxAllowedGuesses; currentGuess++ )
+            // Iterate more than once because results will be somewhat random depending on dictionary word order
+
+            for ( int iteration = 0; iteration < firstWordIterations; iteration++ )
             {
-                string attempt = experimentalAlgorithm ? FindNextAttempt2( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
-                                                                           currentGuess, startingGuess, validGuesses, bestGuess ) :
-                                                         FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
-                                                                          currentGuess, startingGuess );
-                Score( solution, attempt, score, slotsUsed );
-                guesses[ currentGuess ] = attempt;
-                scores[ currentGuess ] = new string( score );
-                if ( experimentalAlgorithm )
-                    remainingGuesses[ currentGuess ] = validGuesses.Count();
-                Interlocked.Increment( ref attempts );
+                if ( randomizeDictionary )
+                    RandomizeList<string>( dictionary );
+    
+                Console.WriteLine( "iteration {0}", iteration );
 
-                if ( SameScore( score, allgreen ) )
+                // For each word in the dictionary as a starting guess, solve for each word in testCases
+
+                for ( startingGuess = 0; startingGuess < dictionary.Count; startingGuess++ )
                 {
-                    success = true;
-                    break;
+                    int successes = 0, failures = 0, attempts = 0;
+                    SolveForAllWords( testCases, startingGuess, dictionary, ref successes, ref failures, ref attempts,
+                                      experimentalAlgorithm, oneCore, maxAllowedGuesses, bestGuess, allgreen, verboseSuccess, verbose );
+
+                    if ( bestList.ContainsKey( dictionary[ startingGuess ] ) )
+                        bestList[ dictionary[ startingGuess ] ] += successes;
+                    else
+                        bestList.Add( dictionary[ startingGuess ], successes );
                 }
+            
+                WordCount [] awc = new WordCount[ dictionary.Count ];
+                int iwc = 0;
+                foreach ( KeyValuePair<string,int> pair in bestList )
+                    awc[ iwc++ ] = new WordCount( (string) pair.Key, (int) pair.Value );
+            
+                WordCountComparer comparer = new WordCountComparer();
+                Array.Sort( awc, comparer );
+        
+                Console.WriteLine( "  best:" );
+                for ( int i = 0; i < 10; i++ )
+                    Console.WriteLine( "    {0} {1:.00}", awc[i].word, 100.0 * (float) awc[i].count / (float) ( testCases.Count * ( iteration + 1 ) ) );
+            
+                Console.WriteLine( "  worst:" );
+                for ( int i = dictionary.Count - 1; i > dictionary.Count - 10; i-- )
+                    Console.WriteLine( "    {0} {1:.00}", awc[i].word, 100.0 * (float) awc[i].count / (float) ( testCases.Count * ( iteration + 1 ) ) );
+
+                Console.WriteLine( "  time so far: {0} seconds", stopWatch.ElapsedMilliseconds / 1000 );
             }
+        }
+        else
+        {
+            int successes = 0, failures = 0, attempts = 0;
+            SolveForAllWords( testCases, startingGuess, dictionary, ref successes, ref failures, ref attempts,
+                              experimentalAlgorithm, oneCore, maxAllowedGuesses, bestGuess, allgreen, verboseSuccess, verbose );
 
-            if ( success )
-                Interlocked.Increment( ref successes );
-            else
-                Interlocked.Increment( ref failures );
-
-            if ( verboseSuccess || ( !success && verbose ) )
-            {
-                lock ( args )
-                {
-                    Console.WriteLine( "{0} for {1}", success ? "solved" : "could not solve", solution );
-                    for ( int g = 0; g < maxAllowedGuesses && null != guesses[g]; g++ )
-                    {
-                        if ( experimentalAlgorithm )
-                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'  remaining words {3}", g, guesses[ g ], scores[ g ],
-                                               0 == remainingGuesses[ g ] ? dictionary.Count() : remainingGuesses[ g ] );
-                        else
-                            Console.WriteLine( "  attempt {0}: {1}  score '{2}'", g, guesses[ g ], scores[ g ] );
-                    }
-                }
-            }
-        } );
-
-        Console.WriteLine( "total games {0}, successes {1}, failures {2}, average attempts {3:.00}, success rate {4:.00}%, {5} milliseconds",
-                           testCases.Count(), successes, failures, (float) attempts / (float) testCases.Count(),
-                           100.0 * (float) successes / (float) testCases.Count(), stopWatch.ElapsedMilliseconds );
+            Console.WriteLine( "total games {0}, successes {1}, failures {2}, average attempts {3:.00}, success rate {4:.00}%, {5} milliseconds",
+                               testCases.Count(), successes, failures, (float) attempts / (float) testCases.Count(),
+                               100.0 * (float) successes / (float) testCases.Count(), stopWatch.ElapsedMilliseconds );
+        }
     } //Main
 } //Wordle
