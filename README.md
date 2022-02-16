@@ -5,8 +5,13 @@ Build like this (using your favorite version of .net):
 
     c:\windows\microsoft.net\framework64\v4.0.30319\csc.exe wordle.cs /nologo /debug:full /o+
 
-By default, the app finds all 5-character words in words.txt and for each attempts to solve wordle. When it can't find a solution, it's
-because there are multiple answers that fit.
+This app has several modes:
+
+    * By default, the app finds all 5-character words in words.txt and for each attempts to solve wordle. When it can't find 
+      a solution, it's because there are multiple answers that fit. Use -g to override the starting guess.
+    * -i Interactive mode to have this app solve Wordle for you if you're playing online
+    * -p Play wordle with randomly generated solutions
+    * -f Like the default mode, but run it 4 times and show the best and worst starting words
 
 To use this app as a tool to solve a the day's game, use -i. To specifiy your own starting word, use -g:guess. 
 
@@ -21,7 +26,7 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
       -r          Don't Randomize the order of words in the dictionary
       -s:solution The word to search for instead of the whole dictionary
       -v          Verbose logging of failures to find a solution. -V for successes too
-      -x          Use experimental algorithm for finding the next guess
+      -x          Use experimental algorithm for finding the next guess. -X for worst guess.
       notes:      Assumes words.txt in the current folder contains a dictionary
                   Only one of -a or -s can be specified
                   Only one of -f, -i, or -p can be specified
@@ -44,6 +49,6 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
  
      https://medium.com/@davidly_33504/first-guesses-in-wordle-291ebd50713a
      
- For more on the /x flag:
+ For more on the /x flag (it's better than choosing words at random!):
  
      https://medium.com/@davidly_33504/choosing-wordle-words-69a7ed5f966b
