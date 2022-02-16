@@ -11,7 +11,7 @@ This app has several modes:
       a solution, it's because there are multiple answers that fit. Use -g to override the starting guess.
     * -i Interactive mode to have this app solve Wordle for you if you're playing online
     * -p Play wordle with randomly generated solutions
-    * -f Like the default mode, but run it 4 times and show the best and worst starting words
+    * -f Like the default mode, but run it 4 times using every word in the dictionary as a starting word.
 
 To use this app as a tool to solve a the day's game, use -i. To specifiy your own starting word, use -g:guess. 
 
