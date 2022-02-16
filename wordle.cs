@@ -614,7 +614,7 @@ class Wordle
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
-            "pause", "elves", "ultra", "robin", "cynic", "aroma", 
+            "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", 
         };
 
         string [] userSolutions = { userSolution };
