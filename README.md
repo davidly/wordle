@@ -12,6 +12,7 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
 
     Usage: wordle [-a] [-g:guess] [-i] [-o] [-r] [-s:solution] [-v]
       -a          Test against actual wordle solutions, not the whole dictionary
+      -f          Try every word as a first guess to see what works best/worst in several iterations.
       -g:guess    The first guess word to use. Default is "blimp"
       -i          Interactive mode. Use this to have the app play wordle for you.
       -m:X        Limit guesses to just X (2-12). Default is 6
@@ -23,6 +24,8 @@ To use this app as a tool to solve a the day's game, use -i. To specifiy your ow
       -x          Use experimental algorithm for finding the next guess
       notes:      Assumes words.txt in the current folder contains a dictionary
                   Only one of -a or -s can be specified
+                  Only one of -f, -i, or -p can be specified
+                  -f allows the iteration count (default 4) to be specified with -f:X
       samples:    wordle              solve each word in the dictionary
                   wordle -i           interactive mode for use with the wordle app
                   wordle -i -r        interactive mode, but don't randomize dictionary word order
