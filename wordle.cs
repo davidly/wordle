@@ -600,7 +600,10 @@ class Wordle
                                                          FindNextAttempt( ref nextGuess, guesses, scores, score, slotsUsed, dictionary,
                                                                           currentGuess, startingGuess );
                 guesses[ currentGuess ] = attempt;
-                Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
+                if ( experimentalAlgorithm )
+                    Console.WriteLine( "guess {0}: {1}    -- {2} matching words remain", currentGuess, attempt, validGuesses.Count() );
+                else
+                    Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
             } while ( true );
 
             Console.WriteLine( "failed to find a solution!" );
@@ -614,7 +617,7 @@ class Wordle
             "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot",
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
-            "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", 
+            "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", 
         };
 
         string [] userSolutions = { userSolution };
