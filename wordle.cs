@@ -621,7 +621,8 @@ class Wordle
             "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung",
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
             "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill",
-            "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", 
+            "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee",
+            "nasty", 
         };
 
         string [] userSolutions = { userSolution };
