@@ -622,7 +622,7 @@ class Wordle
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
             "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill",
             "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee",
-            "nasty", 
+            "nasty", "mourn", 
         };
 
         string [] userSolutions = { userSolution };
