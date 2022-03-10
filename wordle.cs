@@ -32,10 +32,30 @@ class Wordle
         }
     }
 
-    const int wordLen = 5;
+    const int defaultWordLen = 5;
+    static int wordLen = defaultWordLen;
     const int maxGuesses = 6;
     const string dictionaryFile = @"words.txt";
-    const string defaultGuess = @"blimp";   // best first word when choosing the best next word randomly
+
+    static string [] defaultGuesses =
+    {
+        "",
+        "a",
+        "on",
+        "pat",
+        "tamp",
+        "patch",
+        "swampy",
+        "rhombic",
+        "doorbell",
+        "pneumonia",
+        "presenting",
+        "abandonment",          // words of length 11 and longer will always win in 6.
+        "abbreviation",
+        "commercialism",
+        "disillusioning",
+        "trustworthiness",
+    };
 
     static void Score( string solution, string guess, char [] score, bool [] slotsUsed )
     {
@@ -283,9 +303,11 @@ class Wordle
         Console.WriteLine( "error: {0} ", error );
         Console.WriteLine( "Usage: wordle [-a] [-g:guess] [-i] [-m:X] [-o] [-p] [-r] [-s:solution] [-v] [-x]" );
         Console.WriteLine( "  -a          Test against actual wordle solutions, not the whole dictionary" );
+        Console.WriteLine( "  -d          Show the # of words in the dictionary matching the word length" );
         Console.WriteLine( "  -f          Try every word as a first guess to see what works best/worst in several iterations." );
-        Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuess );
+        Console.WriteLine( "  -g:guess    The first guess word to use. Default is \"{0}\"", defaultGuesses[ defaultWordLen ] );
         Console.WriteLine( "  -i          Interactive mode. Use this to have the app play wordle for you." );
+        Console.WriteLine( "  -l:X        Word Length. Default is {0}. Must be 1-15.", defaultWordLen );
         Console.WriteLine( "  -m:X        Limit guesses to just X (2-12). Default is {0}", maxGuesses );
         Console.WriteLine( "  -o          Use just one core" );
         Console.WriteLine( "  -p          Play wordle" );
@@ -412,11 +434,11 @@ class Wordle
         bool experimentalAlgorithm = false;
         bool bestGuess = true;
         bool firstWordMode = false;
+        bool showWordCount = false;
         int firstWordIterations = 4;
-        string firstGuess = defaultGuess;
+        string firstGuess = defaultGuesses[ wordLen ];
         string userSolution = null;
         int maxAllowedGuesses = maxGuesses;
-        string allgreen = new string( 'g', wordLen );
 
         for ( int i = 0; i < args.Length; i++ )
         {
@@ -428,6 +450,8 @@ class Wordle
 
                 if ( 'A' == c )
                     testActual = true;
+                else if ( 'D' == c )
+                    showWordCount = true;
                 else if ( 'F' == c )
                 {
                     firstWordMode = true;
@@ -437,13 +461,24 @@ class Wordle
                 }
                 else if ( 'G' == c )
                 {
-                    if ( arg.Length != ( 3 + wordLen ) )
-                        Usage( "-f parameter has invalid value" );
-
-                    firstGuess = arg.Substring( 3 ).ToLower();
+                    if ( arg.Length >= 4 && ':' == arg[ 2 ] )
+                        firstGuess = arg.Substring( 3 ).ToLower();
+                    else
+                        Usage( "-g parameter has invalid value" );
                 }
                 else if ( 'I' == c )
                     interactiveMode = true;
+                else if ( 'L' == c )
+                {
+                    if ( arg.Length > 5 || arg.Length < 4 )
+                        Usage( "invalid /m argument" );
+
+                    wordLen = int.Parse( arg.Substring( 3 ) );
+                    if ( wordLen < 1 || wordLen > 15 )
+                         Usage( "argument for /l is out of range" );
+
+                    firstGuess = defaultGuesses[ wordLen ];
+                }
                 else if ( 'M' == c )
                 {
                     if ( arg.Length > 5 || arg.Length < 4 )
@@ -483,6 +518,9 @@ class Wordle
                 Usage( "no argument flag - or / specified" );
         }
 
+        if ( firstGuess.Length != wordLen )
+            Usage( " specified first guess '" + firstGuess + "' doesn't match the word length of " + wordLen );
+
         if ( testActual && ( null != userSolution ) )
             Usage( " -a and -s are mutually exclusive" );
 
@@ -494,6 +532,8 @@ class Wordle
 
         if ( interactiveMode && firstWordMode )
             Usage( " -i and -f are mutually exclusive" );
+
+        string allgreen = new string( 'g', wordLen );
 
         List<string> dictionary = new List<string>();
         foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
@@ -508,6 +548,9 @@ class Wordle
 
         if ( randomizeDictionary )
             RandomizeList<string>( dictionary );
+
+        if ( showWordCount )
+            Console.WriteLine( "The dictionary has {0} words of length {1}", dictionary.Count, wordLen );
 
         if ( playWordleMode )
         {
@@ -622,7 +665,7 @@ class Wordle
             "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor",
             "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill",
             "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee",
-            "nasty", "mourn", "ahead", "brine", 
+            "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", 
         };
 
         string [] userSolutions = { userSolution };
@@ -668,11 +711,11 @@ class Wordle
                 Array.Sort( awc, comparer );
         
                 Console.WriteLine( "  best:" );
-                for ( int i = 0; i < 10; i++ )
+                for ( int i = 0; i < Math.Min( awc.Count(), 10 ); i++ )
                     Console.WriteLine( "    {0} {1:.00}", awc[i].word, 100.0 * (float) awc[i].count / (float) ( testCases.Count * ( iteration + 1 ) ) );
             
                 Console.WriteLine( "  worst:" );
-                for ( int i = dictionary.Count - 1; i > dictionary.Count - 10; i-- )
+                for ( int i = dictionary.Count - 1; i > Math.Max( -1, dictionary.Count - 10 ); i-- )
                     Console.WriteLine( "    {0} {1:.00}", awc[i].word, 100.0 * (float) awc[i].count / (float) ( testCases.Count * ( iteration + 1 ) ) );
 
                 Console.WriteLine( "  time so far: {0} seconds", stopWatch.ElapsedMilliseconds / 1000 );
@@ -684,9 +727,9 @@ class Wordle
             SolveForAllWords( testCases, startingGuess, dictionary, ref successes, ref failures, ref attempts,
                               experimentalAlgorithm, oneCore, maxAllowedGuesses, bestGuess, allgreen, verboseSuccess, verbose );
 
-            Console.WriteLine( "total games {0}, successes {1}, failures {2}, average attempts {3:.00}, success rate {4:.00}%, {5} milliseconds",
+            Console.WriteLine( "total games {0}, successes {1}, failures {2}, average attempts {3:.00}, success rate {4:.00}%, {5} milliseconds, first guess {6}",
                                testCases.Count(), successes, failures, (float) attempts / (float) testCases.Count(),
-                               100.0 * (float) successes / (float) testCases.Count(), stopWatch.ElapsedMilliseconds );
+                               100.0 * (float) successes / (float) testCases.Count(), stopWatch.ElapsedMilliseconds, firstGuess );
         }
     } //Main
 } //Wordle
