@@ -666,7 +666,7 @@ class Wordle
             "pause", "elves", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill",
             "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee",
             "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch",
-            "today", "focus", "smelt", "tease", 
+            "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", 
         };
 
         string [] userSolutions = { userSolution };
