@@ -667,7 +667,9 @@ class Wordle
             "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee",
             "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch",
             "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their",
-            "slosh", "purge", "chest", "depot", "epoxy", "nymph", "stove", 
+            "slosh", "purge", "chest", "depot", "epoxy", "nymph", "stove", "lowly", "snout", "trope",
+            "fewer", "shawl", "natal", 
+
         };
 
         string [] userSolutions = { userSolution };
