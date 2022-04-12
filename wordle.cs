@@ -668,7 +668,7 @@ class Wordle
             "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch",
             "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their",
             "slosh", "purge", "chest", "depot", "epoxy", "nymph", "stove", "lowly", "snout", "trope",
-            "fewer", "shawl", "natal", 
+            "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal",
 
         };
 
