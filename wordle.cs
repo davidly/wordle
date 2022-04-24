@@ -669,7 +669,8 @@ class Wordle
             "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their",
             "slosh", "purge", "chest", "depot", "epoxy", "nymph", "stove", "lowly", "snout", "trope",
             "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal",
-            "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", 
+            "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant",
+            "globe", "inert", 
         };
 
         string [] userSolutions = { userSolution };
