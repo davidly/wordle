@@ -670,7 +670,7 @@ class Wordle
             "slosh", "purge", "chest", "depot", "epoxy", "nymph", "stove", "lowly", "snout", "trope",
             "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal",
             "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant",
-            "globe", "inert", 
+            "globe", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story",
         };
 
         string [] userSolutions = { userSolution };
