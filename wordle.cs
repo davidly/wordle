@@ -671,6 +671,7 @@ class Wordle
             "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal",
             "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant",
             "globe", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story",
+            "hairy", "train", "homer", "badge", "midst", "canny", "shine", "gecko", 
         };
 
         string [] userSolutions = { userSolution };
