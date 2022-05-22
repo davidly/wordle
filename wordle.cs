@@ -672,7 +672,7 @@ class Wordle
             "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant",
             "globe", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story",
             "hairy", "train", "homer", "badge", "midst", "canny", "shine", "gecko", "farce", "slung",
-            "tipsy", "metal", 
+            "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "boney",
         };
 
         string [] userSolutions = { userSolution };
