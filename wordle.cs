@@ -673,7 +673,7 @@ class Wordle
             "globe", "inert", "askew", "heist", "shown", "zesty", "trash", "larva", "forgo", "story",
             "hairy", "train", "homer", "badge", "midst", "canny", "shine", "gecko", "farce", "slung",
             "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "boney",
-            "hinge", "album", "vouch", "asset", "tiara", "crept", 
+            "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak",
         };
 
         string [] userSolutions = { userSolution };
