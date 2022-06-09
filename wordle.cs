@@ -240,9 +240,9 @@ class Wordle
             Environment.Exit( 1 );
         }
 
-        // If there are 3 or fewer remaining guesses, just grab the first at random
+        // If there are 2 or fewer remaining guesses, just grab the first at random
 
-        if ( validGuesses.Count() <= 3 )
+        if ( validGuesses.Count() <= 2 )
             return validGuesses[ 0 ];
 
         // record how frequently each letter is found in the set of valid guesses
@@ -536,14 +536,23 @@ class Wordle
         string allgreen = new string( 'g', wordLen );
 
         List<string> dictionary = new List<string>();
-        foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
+
+        try
         {
-            if ( wordLen == line.Length )
+            foreach ( string line in System.IO.File.ReadLines( dictionaryFile ) )
             {
-                string lowerLine = line.ToLower();
-                if ( IsAllAlpha( lowerLine ) )
-                   dictionary.Add( lowerLine );
+                if ( wordLen == line.Length )
+                {
+                    string lowerLine = line.ToLower();
+                    if ( IsAllAlpha( lowerLine ) )
+                       dictionary.Add( lowerLine );
+                }
             }
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine( "Can't find the dictionary file {0} -- make sure it's in the same folder as wordle.exe", dictionaryFile );
+            Environment.Exit( 1 );
         }
 
         if ( randomizeDictionary )
@@ -674,13 +683,12 @@ class Wordle
             "hairy", "train", "homer", "badge", "midst", "canny", "shine", "gecko", "farce", "slung",
             "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "boney",
             "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak",
-            "showy", "phase", "froth", "depth", "gloom", "flood", 
+            "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", 
         };
 
         string [] userSolutions = { userSolution };
         IList<string> testCases = ( null != userSolution ) ? ( IList<string> ) userSolutions :
                                   testActual ? ( IList<string> ) actualSolutions : dictionary;
-
 
         Stopwatch stopWatch = Stopwatch.StartNew();
 
