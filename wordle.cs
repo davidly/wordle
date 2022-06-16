@@ -683,7 +683,8 @@ class Wordle
             "hairy", "train", "homer", "badge", "midst", "canny", "shine", "gecko", "farce", "slung",
             "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "boney",
             "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak",
-            "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", 
+            "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", "piety", "goose",
+            "float", "donor", "atone", "primo", "apron", 
         };
 
         string [] userSolutions = { userSolution };
