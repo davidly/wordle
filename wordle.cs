@@ -684,7 +684,7 @@ class Wordle
             "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "boney",
             "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak",
             "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", "piety", "goose",
-            "float", "donor", "atone", "primo", "apron", 
+            "float", "donor", "atone", "primo", "apron", "blown", "cacao", "loser", "input", 
         };
 
         string [] userSolutions = { userSolution };
