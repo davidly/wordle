@@ -687,7 +687,8 @@ class Wordle
             "float", "donor", "atone", "primo", "apron", "blown", "cacao", "loser", "input", "gloat",
             "awful", "brink", "smite", "beady", "rusty", "retro", "droll", "gawky", "pinto", "egret",
             "lilac", "sever", "field", "fluff", "agape", "stead", "berth", "madam", "night", "bland",
-            "liver", "wedge", "roomy", "wacky", "flock", "angry", "trite", 
+            "liver", "wedge", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge",
+            "power", "elope", "cinch", "motto", 
         };
 
         string [] userSolutions = { userSolution };
