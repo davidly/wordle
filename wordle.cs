@@ -688,7 +688,7 @@ class Wordle
             "awful", "brink", "smite", "beady", "rusty", "retro", "droll", "gawky", "pinto", "egret",
             "lilac", "sever", "field", "fluff", "agape", "stead", "berth", "madam", "night", "bland",
             "liver", "wedge", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge",
-            "power", "elope", "cinch", "motto", 
+            "power", "elope", "cinch", "motto", "stomp", 
         };
 
         string [] userSolutions = { userSolution };
