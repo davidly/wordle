@@ -689,6 +689,7 @@ class Wordle
             "lilac", "sever", "field", "fluff", "agape", "stead", "berth", "madam", "night", "bland",
             "liver", "wedge", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge",
             "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly",
+            "youth", "rhyme", "buggy", "alien", "smear", 
         };
 
         string [] userSolutions = { userSolution };
