@@ -21738,7 +21738,6 @@ getter
 getting
 geyser
 geysers
-ghana
 ghanian
 ghastlier
 ghastliest
