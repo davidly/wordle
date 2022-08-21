@@ -690,7 +690,7 @@ class Wordle
             "liver", "wedge", "roomy", "wacky", "flock", "angry", "trite", "aphid", "tryst", "midge",
             "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly",
             "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label",
-            "hunky", "khaki", 
+            "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste",
         };
 
         string [] userSolutions = { userSolution };
