@@ -691,7 +691,8 @@ class Wordle
             "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly",
             "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label",
             "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit",
-            "woven", "needy", "clown", "irony", 
+            "woven", "needy", "clown", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi",
+            "charm", "gully", 
         };
 
         string [] userSolutions = { userSolution };
