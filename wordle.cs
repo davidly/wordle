@@ -564,7 +564,7 @@ class Wordle
         if ( playWordleMode )
         {
             Random rand = new Random( Environment.TickCount );
-            string solution = dictionary[ rand.Next( dictionary.Count() ) ];
+            string solution = ( userSolution == null ) ? dictionary[ rand.Next( dictionary.Count() ) ] : userSolution;
             char [] score = new char[ wordLen ];
             bool [] slotsUsed = new bool[ wordLen ];
 
@@ -692,7 +692,7 @@ class Wordle
             "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label",
             "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit",
             "woven", "needy", "clown", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi",
-            "charm", "gully", 
+            "charm", "gully", "inter", "whoop", "taunt", 
         };
 
         string [] userSolutions = { userSolution };
