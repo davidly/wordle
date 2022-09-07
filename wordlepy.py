@@ -79,7 +79,6 @@ def main():
         next_guess_index = 0
 
     print( "guess # 1", guess )
-
     guesses = []
     guesses.append( guess )
     scores = []
@@ -99,12 +98,10 @@ def main():
                 quit()
 
             attempt = find_next_attempt( guesses, scores, dictionary, current_guess, starting_guess_index )
-
             print( "guess #", current_guess + 1, attempt )
-
             guesses.append( attempt )
     
-    print( "done" )
+    print( "ran out of attempts :(" )
 
 if __name__ == "__main__":
     main()

@@ -692,7 +692,7 @@ class Wordle
             "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label",
             "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit",
             "woven", "needy", "clown", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi",
-            "charm", "gully", "inter", "whoop", "taunt", 
+            "charm", "gully", "inter", "whoop", "taunt", "leery", 
         };
 
         string [] userSolutions = { userSolution };
