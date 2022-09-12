@@ -202,7 +202,7 @@ def main():
 
             if use_smart_algorithm:
                 attempt = find_next_attempt_smart( guesses, scores, dictionary, current_guess, starting_guess_index, valid_guesses )
-                print( "guess #", current_guess + 1, attempt, "   --- ", len( valid_guesses ), " words remaining" )
+                print( "guess #", current_guess + 1, attempt, "  --", len( valid_guesses ), "words left" )
             else:
                 attempt = find_next_attempt( guesses, scores, dictionary, current_guess, starting_guess_index )
                 print( "guess #", current_guess + 1, attempt )

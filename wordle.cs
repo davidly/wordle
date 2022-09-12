@@ -598,7 +598,7 @@ class Wordle
 
                 if ( 0 == String.Compare( allgreen, strScore ) )
                 {
-                    Console.WriteLine( allgreen + "\nYou found the solution!" );
+                    Console.WriteLine( allgreen + "\nYou found the solution in " + ( attempt + 1 ) + " tries!" );
                     Environment.Exit( 0 );
                 }
             }
@@ -692,7 +692,8 @@ class Wordle
             "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label",
             "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit",
             "woven", "needy", "clown", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi",
-            "charm", "gully", "inter", "whoop", "taunt", "leery", 
+            "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia",
+            "booze", 
         };
 
         string [] userSolutions = { userSolution };
