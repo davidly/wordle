@@ -693,7 +693,7 @@ class Wordle
             "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "waste", "merit",
             "woven", "needy", "clown", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi",
             "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia",
-            "booze", 
+            "booze", "alpha", "thyme", "doubt", 
         };
 
         string [] userSolutions = { userSolution };
