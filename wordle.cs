@@ -695,7 +695,8 @@ class Wordle
             "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia",
             "booze", "alpha", "thyme", "doubt", "parer", "chute", "stick", "trice", "alike", "recap",
             "saint", "glory", "grate", "admit", "brisk", "soggy", "usurp", "scald", "scorn", "leave",
-            "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", 
+            "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy", "valid",
+            "ionic", "equal", "floor", "catch", "spade", 
         };
 
         string [] userSolutions = { userSolution };
