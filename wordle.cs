@@ -696,7 +696,9 @@ class Wordle
             "booze", "alpha", "thyme", "doubt", "parer", "chute", "stick", "trice", "alike", "recap",
             "saint", "glory", "grate", "admit", "brisk", "soggy", "usurp", "scald", "scorn", "leave",
             "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy", "valid",
-            "ionic", "equal", "floor", "catch", "spade", 
+            "ionic", "equal", "floor", "catch", "spade", "stein", "exist", "quirk", "denim", "grove",
+            "spiel", "mummy", "fault", "foggy", "flout", "carry", "sneak", "libel", "waltz", "aptly",
+            "piney", "inept", "aloud", "photo", "dream", "stale", "begin", 
         };
 
         string [] userSolutions = { userSolution };
