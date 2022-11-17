@@ -698,7 +698,8 @@ class Wordle
             "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy", "valid",
             "ionic", "equal", "floor", "catch", "spade", "stein", "exist", "quirk", "denim", "grove",
             "spiel", "mummy", "fault", "foggy", "flout", "carry", "sneak", "libel", "waltz", "aptly",
-            "piney", "inept", "aloud", "photo", "dream", "stale", "begin", 
+            "piney", "inept", "aloud", "photo", "dream", "stale", "begin", "spell", "rainy", "unite",
+            "medal", "valet", "inane", "maple", "snarl", "baker", 
         };
 
         string [] userSolutions = { userSolution };

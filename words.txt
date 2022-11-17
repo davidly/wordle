@@ -3603,7 +3603,6 @@ bacterium
 bad
 baddy
 bade
-bader
 badge
 badged
 badger
