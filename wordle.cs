@@ -699,7 +699,9 @@ class Wordle
             "ionic", "equal", "floor", "catch", "spade", "stein", "exist", "quirk", "denim", "grove",
             "spiel", "mummy", "fault", "foggy", "flout", "carry", "sneak", "libel", "waltz", "aptly",
             "piney", "inept", "aloud", "photo", "dream", "stale", "begin", "spell", "rainy", "unite",
-            "medal", "valet", "inane", "maple", "snarl", "baker", 
+            "medal", "valet", "inane", "maple", "snarl", "baker", "there", "glyph", "avert", "brave",
+            "axiom", "prime", "drive", "feast", "itchy", "clean", "happy", "tepid", "undue", "study",
+            "eject", "chafe", "torso", "adore", "woken", "amber", "joust", 
         };
 
         string [] userSolutions = { userSolution };
