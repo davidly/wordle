@@ -656,7 +656,15 @@ class Wordle
                                                                           currentGuess, startingGuess );
                 guesses[ currentGuess ] = attempt;
                 if ( experimentalAlgorithm )
+                {
                     Console.WriteLine( "guess {0}: {1}    -- {2} matching words remain", currentGuess, attempt, validGuesses.Count() );
+                    if ( validGuesses.Count() < 10 )
+                    {
+                        Console.WriteLine( "  remaining words:" );
+                        foreach( string s in validGuesses )
+                            Console.WriteLine( "    " + s );
+                    }
+                }
                 else
                     Console.WriteLine( "guess {0}: {1}", currentGuess, attempt );
             } while ( true );
@@ -701,7 +709,8 @@ class Wordle
             "piney", "inept", "aloud", "photo", "dream", "stale", "begin", "spell", "rainy", "unite",
             "medal", "valet", "inane", "maple", "snarl", "baker", "there", "glyph", "avert", "brave",
             "axiom", "prime", "drive", "feast", "itchy", "clean", "happy", "tepid", "undue", "study",
-            "eject", "chafe", "torso", "adore", "woken", "amber", "joust", 
+            "eject", "chafe", "torso", "adore", "woken", "amber", "joust", "infer", "braid", "frock",
+            "naive", "apply",
         };
 
         string [] userSolutions = { userSolution };
